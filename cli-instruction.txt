@@ -1,0 +1,1 @@
+npx sequelize model:generate --name Phone --attributes brand:string,model:string,manufacturedAt:integer,ramSize:integer,processor:string,screenDiagonal:integer,isHavingNFC:boolean
