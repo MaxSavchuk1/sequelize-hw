@@ -2,6 +2,10 @@ const { Router } = require('express');
 const { phonesController } = require('../controllers');
 const phonesRouter = Router();
 
-//code will be soon
+phonesRouter
+  .route('/')
+  .get(phonesController.getPhones)
+  .post(phonesController.createPhone);
 
+phonesRouter.route('/:phoneId').get(phonesController.getPhoneById);
 module.exports = phonesRouter;

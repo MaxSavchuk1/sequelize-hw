@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       manufacturedAt: {
-        type: DataTypes.SNALLINT,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         validate: { isInt: true, min: 1984, max: new Date().getFullYear() },
       },

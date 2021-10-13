@@ -1,0 +1,22 @@
+GET http://localhost:5000/api/phones HTTP/1.1
+
+###
+GET http://localhost:5000/api/phones/2 HTTP/1.1
+
+###
+
+POST http://localhost:5000/api/phones HTTP/1.1
+Content-Type: application/json
+
+{   
+    "brand": "Sony",
+    "model": "Xreria 1",
+    "manufacturedAt": 2019,
+    "ramSize": 6,
+    "processor": "Snapdragon 855",
+    "screenDiagonal": 6.5,
+    "isHavingNFC": true
+}
+
+###
+
