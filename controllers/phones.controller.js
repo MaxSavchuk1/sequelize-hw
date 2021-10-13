@@ -60,7 +60,16 @@ module.exports.updatePhone = async (req, res, next) => {
 };
 
 module.exports.deletePhone = async (req, res, next) => {
+  const {
+    params: { phoneId },
+  } = req;
   try {
+    const deletedCount = await Phone.destroy({ where: { id: phoneId } });
+    if (deletedCount) {
+      res.status(204).send();
+    } else {
+      res.status(404).send('NOT FOUND');
+    }
   } catch (e) {
     next(e);
   }
