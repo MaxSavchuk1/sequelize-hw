@@ -52,8 +52,20 @@ module.exports.getPhoneById = async (req, res, next) => {
   }
 };
 
-module.exports.updatePhone = async (req, res, next) => {
+module.exports.updateOrCreatePhone = async (req, res, next) => {
+  const {
+    body,
+    params: { phoneId },
+  } = req;
   try {
+    const [count] = await Phone.update(body, {
+      where: { id: phoneId },
+    });
+    if (count) {
+      return res.status(201).send();
+    }
+    req.body.id = phoneId;
+    next();
   } catch (e) {
     next(e);
   }
