@@ -23,11 +23,9 @@ module.exports = {
         manufacturedAt: {
           type: Sequelize.SMALLINT,
           allowNull: false,
-          validate: { isInt: true, min: 1984, max: new Date().getFullYear() },
         },
         ramSize: {
           type: Sequelize.REAL,
-          validate: { min: 0.1, max: 64 },
         },
         processor: {
           type: Sequelize.STRING,
@@ -36,7 +34,6 @@ module.exports = {
         screenDiagonal: {
           type: Sequelize.REAL,
           allowNull: false,
-          validate: { min: 0.5, max: 10 },
         },
         isHavingNFC: {
           type: Sequelize.BOOLEAN,
