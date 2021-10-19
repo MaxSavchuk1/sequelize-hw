@@ -29,3 +29,21 @@ module.exports.createBrand = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.getAllBrandModels = async (req, res, next) => {
+  const {
+    params: { brandId },
+  } = req;
+  try {
+    const [foundBrand] = await Brand.findAll({ where: { id: brandId } });
+    const phonesOfBrand = await foundBrand.getPhones({
+      raw: true,
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'brandId'],
+      },
+    });
+    res.status(200).send({ data: phonesOfBrand });
+  } catch (e) {
+    next(e);
+  }
+};

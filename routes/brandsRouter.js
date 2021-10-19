@@ -7,4 +7,8 @@ brandsRouter
   .get(brandsController.getBrands)
   .post(brandsController.createBrand);
 
+brandsRouter
+  .route('/:brandId/all_phones')
+  .get(brandsController.getAllBrandModels);
+
 module.exports = brandsRouter;

@@ -1,4 +1,4 @@
-GET http://localhost:5000/api/brands HTTP/1.1
+GET http://localhost:5000/api/phones HTTP/1.1
 
 ###
 GET http://localhost:5000/api/phones/3 HTTP/1.1
@@ -47,3 +47,8 @@ Content-Type: application/json
 }
 
 ###
+
+GET http://localhost:5000/api/brands HTTP/1.1
+
+###
+GET http://localhost:5000/api/brands/1/all_phones HTTP/1.1
