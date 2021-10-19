@@ -39,14 +39,14 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-/***************** после старта отсюда закоммнтировать */
-// sequelize
-//   .sync({ force: true })
-//   .then(result => {
-//     console.log('Sync OK');
-//   })
-//   .catch(err => console.log(err));
-//************** до сюда */
+/************************************** отсюда закомментировать */
+sequelize
+  .sync({ force: true })
+  .then(result => {
+    console.log('Sync OK');
+  })
+  .catch(err => console.log(err));
+//*************************************** до сюда */
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
