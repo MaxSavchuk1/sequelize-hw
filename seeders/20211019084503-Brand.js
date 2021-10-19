@@ -30,7 +30,7 @@ const brandsInitialData = [
     updatedAt: new Date(),
   },
   {
-    brandName: 'OnePlus',
+    brandName: 'Oneplus',
     description:
       'OnePlus was founded on 17 December 2013 by former Oppo vice-president Pete Lau and Carl Pei.',
     createdAt: new Date(),

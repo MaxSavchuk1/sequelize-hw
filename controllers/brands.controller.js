@@ -40,7 +40,6 @@ module.exports.getAllBrandModels = async (req, res, next) => {
     const [foundBrand] = await Brand.findAll({
       where: { brandName: { [Op.endsWith]: brandName.slice(1) } }, // потому что в базе бренд с большой буквы
     });
-
     if (foundBrand === undefined) {
       return res.status(404).send('NOT FOUND');
     }
@@ -51,6 +50,26 @@ module.exports.getAllBrandModels = async (req, res, next) => {
       },
     });
     res.status(200).send({ data: phonesOfBrand });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.createPhoneByName = async (req, res, next) => {
+  const {
+    params: { brandName },
+    body,
+  } = req;
+  try {
+    const [foundBrand] = await Brand.findAll({
+      where: { brandName: { [Op.endsWith]: brandName.slice(1) } },
+    });
+    if (foundBrand === undefined) {
+      return res.status(404).send('NOT FOUND');
+    }
+    const newPhone = await foundBrand.createPhone(body);
+    const prepairedPhone = _.omit(newPhone.get(), ['createdAt', 'updatedAt']);
+    res.status(201).send({ data: prepairedPhone });
   } catch (e) {
     next(e);
   }
