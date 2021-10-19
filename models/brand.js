@@ -3,7 +3,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Brand extends Model {
     static associate (models) {
-      // define association here
+      Brand.hasMany(models.Phone, {
+        foreignKey: 'brandId',
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE',
+      });
     }
   }
   Brand.init(

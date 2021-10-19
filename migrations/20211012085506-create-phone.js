@@ -10,8 +10,8 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        brand: {
-          type: Sequelize.STRING,
+        brandId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
           unique: 'actions_unique',
         },
@@ -51,7 +51,7 @@ module.exports = {
       {
         uniqueKeys: {
           actions_unique: {
-            fields: ['brand', 'model'],
+            fields: ['brandId', 'model'],
           },
         },
       }

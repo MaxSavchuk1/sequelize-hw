@@ -2,7 +2,7 @@
 
 const phonesInitialData = [
   {
-    brand: 'Samsung',
+    brandId: 1,
     model: 'S9',
     manufacturedAt: 2017,
     ramSize: 4,
@@ -13,7 +13,7 @@ const phonesInitialData = [
     updatedAt: new Date(),
   },
   {
-    brand: 'Apple',
+    brandId: 2,
     model: 'iPhone 12 Pro Max',
     manufacturedAt: 2020,
     ramSize: 6,

@@ -3,13 +3,15 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Phone extends Model {
     static associate (models) {
-      // define association here
+      Phone.belongsTo(models.Brand, {
+        foreignKey: 'brandId',
+      });
     }
   }
   Phone.init(
     {
-      brand: {
-        type: DataTypes.STRING,
+      brandId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       model: {
@@ -45,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       indexes: [
         {
           unique: true,
-          fields: ['brand', 'model'],
+          fields: ['brandId', 'model'],
         },
       ],
     }
