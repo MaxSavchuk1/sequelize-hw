@@ -1,4 +1,5 @@
 const { Brand } = require('./../models');
+const { Op } = require('sequelize');
 const _ = require('lodash');
 
 module.exports.getBrands = async (req, res, next) => {
@@ -32,10 +33,17 @@ module.exports.createBrand = async (req, res, next) => {
 
 module.exports.getAllBrandModels = async (req, res, next) => {
   const {
-    params: { brandId },
+    params: { brandName },
   } = req;
+
   try {
-    const [foundBrand] = await Brand.findAll({ where: { id: brandId } });
+    const [foundBrand] = await Brand.findAll({
+      where: { brandName: { [Op.endsWith]: brandName.slice(1) } }, // потому что в базе бренд с большой буквы
+    });
+
+    if (foundBrand === undefined) {
+      return res.status(404).send('NOT FOUND');
+    }
     const phonesOfBrand = await foundBrand.getPhones({
       raw: true,
       attributes: {
