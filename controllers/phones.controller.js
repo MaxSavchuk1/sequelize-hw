@@ -1,4 +1,4 @@
-const { Phone, Brand } = require('./../models');
+const { Phone, Brand, sequelize } = require('./../models');
 const _ = require('lodash');
 
 module.exports.getPhones = async (req, res, next) => {
@@ -7,8 +7,8 @@ module.exports.getPhones = async (req, res, next) => {
       include: {
         model: Brand,
         attributes: {
-          // include: ['brandName', 'name'],
-          exclude: ['createdAt', 'updatedAt', 'id', 'description'],
+          include: [[sequelize.literal('"brandName"'), 'name']], // мотивация состои в том, что некрасиво смотрится Brand.brandName))
+          exclude: ['createdAt', 'updatedAt', 'id', 'description', 'brandName'],
         },
       },
       attributes: {
@@ -43,10 +43,17 @@ module.exports.getPhoneById = async (req, res, next) => {
   } = req;
   try {
     const [foundPhone] = await Phone.findAll({
+      include: {
+        model: Brand,
+        attributes: {
+          include: [[sequelize.literal('"brandName"'), 'name']],
+          exclude: ['createdAt', 'updatedAt', 'id', 'description', 'brandName'],
+        },
+      },
       raw: true,
       where: { id: phoneId },
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'brandId'],
       },
     });
     if (foundPhone) {
