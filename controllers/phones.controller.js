@@ -1,11 +1,18 @@
-const { Phone } = require('./../models');
+const { Phone, Brand } = require('./../models');
 const _ = require('lodash');
 
 module.exports.getPhones = async (req, res, next) => {
   try {
     const foundPhones = await Phone.findAll({
+      include: {
+        model: Brand,
+        attributes: {
+          // include: ['brandName', 'name'],
+          exclude: ['createdAt', 'updatedAt', 'id', 'description'],
+        },
+      },
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'brandId'],
       },
       raw: true,
       limit: 10,
