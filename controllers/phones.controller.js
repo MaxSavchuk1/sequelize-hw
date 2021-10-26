@@ -3,17 +3,6 @@ const _ = require('lodash');
 
 const excludedData = ['createdAt', 'updatedAt'];
 
-// const updatePhoneLogic = async (phoneId, body, res) => {
-//   const [count, [updatedPhone]] = await Phone.update(body, {
-//     where: { id: phoneId },
-//     returning: true,
-//   });
-//   if (count) {
-//     const prepairedPhone = _.omit(updatedPhone.get(), excludedData);
-//     return res.status(200).send({ data: prepairedPhone });
-//   }
-// };
-
 module.exports.getPhones = async (req, res, next) => {
   try {
     const foundPhones = await Phone.findAll({
