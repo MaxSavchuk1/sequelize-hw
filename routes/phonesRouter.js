@@ -11,6 +11,7 @@ phonesRouter
   .route('/:phoneId')
   .get(phonesController.getPhoneById)
   .delete(phonesController.deletePhone)
+  .patch(phonesController.updatePhone)
   .put(phonesController.updateOrCreatePhone, phonesController.createPhone);
 
 module.exports = phonesRouter;

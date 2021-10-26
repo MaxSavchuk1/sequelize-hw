@@ -1,18 +1,31 @@
 const { Phone, Brand, sequelize } = require('./../models');
 const _ = require('lodash');
 
+const excludedData = ['createdAt', 'updatedAt'];
+
+// const updatePhoneLogic = async (phoneId, body, res) => {
+//   const [count, [updatedPhone]] = await Phone.update(body, {
+//     where: { id: phoneId },
+//     returning: true,
+//   });
+//   if (count) {
+//     const prepairedPhone = _.omit(updatedPhone.get(), excludedData);
+//     return res.status(200).send({ data: prepairedPhone });
+//   }
+// };
+
 module.exports.getPhones = async (req, res, next) => {
   try {
     const foundPhones = await Phone.findAll({
       include: {
         model: Brand,
         attributes: {
-          include: [[sequelize.literal('"brandName"'), 'name']], // мотивация состои в том, что некрасиво смотрится Brand.brandName))
-          exclude: ['createdAt', 'updatedAt', 'id', 'description', 'brandName'],
+          include: [[sequelize.literal('"brandName"'), 'name']], // мотивация состоит в том, что некрасиво смотрится Brand.brandName))
+          exclude: [...excludedData, 'id', 'description', 'brandName'],
         },
       },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'brandId'],
+        exclude: [...excludedData, 'brandId'],
       },
       raw: true,
       limit: 10,
@@ -27,10 +40,7 @@ module.exports.createPhone = async (req, res, next) => {
   const { body } = req;
   try {
     const createdPhone = await Phone.create(body);
-    const prepairedPhone = _.omit(createdPhone.get(), [
-      'createdAt',
-      'updatedAt',
-    ]);
+    const prepairedPhone = _.omit(createdPhone.get(), excludedData);
     res.status(201).send({ data: prepairedPhone });
   } catch (e) {
     next(e);
@@ -47,13 +57,13 @@ module.exports.getPhoneById = async (req, res, next) => {
         model: Brand,
         attributes: {
           include: [[sequelize.literal('"brandName"'), 'name']],
-          exclude: ['createdAt', 'updatedAt', 'id', 'description', 'brandName'],
+          exclude: [...excludedData, 'id', 'description', 'brandName'],
         },
       },
       raw: true,
       where: { id: phoneId },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'brandId'],
+        exclude: [...excludedData, 'brandId'],
       },
     });
     if (foundPhone) {
@@ -72,11 +82,13 @@ module.exports.updateOrCreatePhone = async (req, res, next) => {
     params: { phoneId },
   } = req;
   try {
-    const [count] = await Phone.update(body, {
+    const [count, [updatedPhone]] = await Phone.update(body, {
       where: { id: phoneId },
+      returning: true,
     });
     if (count) {
-      return res.status(201).send();
+      const prepairedPhone = _.omit(updatedPhone.get(), excludedData);
+      return res.status(200).send({ data: prepairedPhone });
     }
     req.body.id = phoneId;
     next();
@@ -95,6 +107,25 @@ module.exports.deletePhone = async (req, res, next) => {
       res.status(204).send();
     } else {
       res.status(404).send('NOT FOUND');
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.updatePhone = async (req, res, next) => {
+  const {
+    body,
+    params: { phoneId },
+  } = req;
+  try {
+    const [count, [updatedPhone]] = await Phone.update(body, {
+      where: { id: phoneId },
+      returning: true,
+    });
+    if (count) {
+      const prepairedPhone = _.omit(updatedPhone.get(), excludedData);
+      return res.status(200).send({ data: prepairedPhone });
     }
   } catch (e) {
     next(e);
