@@ -1,7 +1,7 @@
 GET http://localhost:5000/api/phones HTTP/1.1
 
 ###
-GET http://localhost:5000/api/phones/2 HTTP/1.1
+GET http://localhost:5000/api/phones/33 HTTP/1.1
 
 ###
 
@@ -24,7 +24,7 @@ DELETE http://localhost:5000/api/phones/6 HTTP/1.1
 
 ###
 
-PATCH http://localhost:5000/api/phones/2 HTTP/1.1
+PATCH http://localhost:5000/api/phones/18 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -33,12 +33,12 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:5000/api/phones/8 HTTP/1.1
+PUT http://localhost:5000/api/phones/1 HTTP/1.1
 Content-Type: application/json
 
 {   
     "brandId": 3,
-    "model": "Redmi Note 131464Gb",
+    "model": "Redmi Note 65Gb",
     "manufacturedAt": 2021,
     "ramSize": 4,
     "processor": "Snapdragon 678",

@@ -4,12 +4,12 @@ const phonesRouter = Router();
 
 phonesRouter
   .route('/')
-  .get(phonesController.getPhones)
+  .get(phonesController.getPhonesOrPhone)
   .post(phonesController.createPhone);
 
 phonesRouter
   .route('/:phoneId')
-  .get(phonesController.getPhoneById)
+  .get(phonesController.getPhonesOrPhone)
   .delete(phonesController.deletePhone)
   .patch(phonesController.updateOrCreatePhone)
   .put(phonesController.updateOrCreatePhone, phonesController.createPhone);

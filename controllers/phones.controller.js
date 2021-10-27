@@ -3,8 +3,16 @@ const _ = require('lodash');
 
 const excludedData = ['createdAt', 'updatedAt'];
 
-module.exports.getPhones = async (req, res, next) => {
-  console.log(`req`, req.method);
+module.exports.getPhonesOrPhone = async (req, res, next) => {
+  const {
+    params: { phoneId },
+  } = req;
+  let options;
+  if (phoneId) {
+    options = { where: { id: phoneId } };
+  } else {
+    options = { limit: 10 };
+  }
   try {
     const foundPhones = await Phone.findAll({
       include: {
@@ -18,9 +26,13 @@ module.exports.getPhones = async (req, res, next) => {
         exclude: [...excludedData, 'brandId'],
       },
       raw: true,
-      limit: 10,
+      ...options,
     });
-    res.status(200).send({ data: foundPhones });
+    if (foundPhones.length) {
+      res.status(200).send({ data: foundPhones });
+    } else {
+      res.status(404).send('NOT FOUND');
+    }
   } catch (e) {
     next(e);
   }
@@ -32,35 +44,6 @@ module.exports.createPhone = async (req, res, next) => {
     const createdPhone = await Phone.create(body);
     const prepairedPhone = _.omit(createdPhone.get(), excludedData);
     res.status(201).send({ data: prepairedPhone });
-  } catch (e) {
-    next(e);
-  }
-};
-
-module.exports.getPhoneById = async (req, res, next) => {
-  const {
-    params: { phoneId },
-  } = req;
-  try {
-    const [foundPhone] = await Phone.findAll({
-      include: {
-        model: Brand,
-        attributes: {
-          include: [[sequelize.literal('"brandName"'), 'name']],
-          exclude: [...excludedData, 'id', 'description', 'brandName'],
-        },
-      },
-      raw: true,
-      where: { id: phoneId },
-      attributes: {
-        exclude: [...excludedData, 'brandId'],
-      },
-    });
-    if (foundPhone) {
-      res.status(200).send(foundPhone);
-    } else {
-      res.status(404).send('NOT FOUND');
-    }
   } catch (e) {
     next(e);
   }
