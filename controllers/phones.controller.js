@@ -4,6 +4,7 @@ const _ = require('lodash');
 const excludedData = ['createdAt', 'updatedAt'];
 
 module.exports.getPhones = async (req, res, next) => {
+  console.log(`req`, req.method);
   try {
     const foundPhones = await Phone.findAll({
       include: {
@@ -70,6 +71,7 @@ module.exports.updateOrCreatePhone = async (req, res, next) => {
     body,
     params: { phoneId },
   } = req;
+
   try {
     const [count, [updatedPhone]] = await Phone.update(body, {
       where: { id: phoneId },
@@ -79,8 +81,14 @@ module.exports.updateOrCreatePhone = async (req, res, next) => {
       const prepairedPhone = _.omit(updatedPhone.get(), excludedData);
       return res.status(200).send({ data: prepairedPhone });
     }
-    req.body.id = phoneId;
-    next();
+    // я решил так сделать, для ПУТ и ПАТЧ обработка в одной функции. Не вижу причин, почему нет -_-
+    if (req.method === 'PUT') {
+      req.body.id = phoneId;
+      next();
+    }
+    if (req.method === 'PATCH') {
+      res.status(404).send('NOT FOUND');
+    }
   } catch (e) {
     next(e);
   }
@@ -96,25 +104,6 @@ module.exports.deletePhone = async (req, res, next) => {
       res.status(204).send();
     } else {
       res.status(404).send('NOT FOUND');
-    }
-  } catch (e) {
-    next(e);
-  }
-};
-
-module.exports.updatePhone = async (req, res, next) => {
-  const {
-    body,
-    params: { phoneId },
-  } = req;
-  try {
-    const [count, [updatedPhone]] = await Phone.update(body, {
-      where: { id: phoneId },
-      returning: true,
-    });
-    if (count) {
-      const prepairedPhone = _.omit(updatedPhone.get(), excludedData);
-      return res.status(200).send({ data: prepairedPhone });
     }
   } catch (e) {
     next(e);
