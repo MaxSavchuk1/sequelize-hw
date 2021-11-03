@@ -8,7 +8,7 @@ brandsRouter
   .post(brandsController.createBrand);
 
 brandsRouter
-  .route('/:brandName')
+  .route('/:brandName/phones')
   .get(brandsController.getAllBrandModels)
   .post(brandsController.createPhoneByName);
 
