@@ -1,6 +1,7 @@
 const { Brand } = require('./../models');
 const { Op } = require('sequelize');
 const _ = require('lodash');
+const sequelize = require('sequelize');
 
 module.exports.getBrands = async (req, res, next) => {
   try {
@@ -38,7 +39,10 @@ module.exports.getAllBrandModels = async (req, res, next) => {
 
   try {
     const [foundBrand] = await Brand.findAll({
-      where: { brandName: { [Op.endsWith]: brandName.slice(1) } }, // потому что в базе бренд с большой буквы
+      where: sequelize.where(
+        sequelize.fn('lower', sequelize.col('brandName')),
+        brandName
+      ),
     });
     if (foundBrand === undefined) {
       return res.status(404).send('NOT FOUND');
@@ -62,8 +66,12 @@ module.exports.createPhoneByName = async (req, res, next) => {
   } = req;
   try {
     const [foundBrand] = await Brand.findAll({
-      where: { brandName: { [Op.endsWith]: brandName.slice(1) } },
+      where: sequelize.where(
+        sequelize.fn('lower', sequelize.col('brandName')),
+        brandName
+      ),
     });
+
     if (foundBrand === undefined) {
       return res.status(404).send('NOT FOUND');
     }

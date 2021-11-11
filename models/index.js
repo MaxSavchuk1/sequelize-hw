@@ -39,7 +39,7 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-/************************************** отсюда закомментировать */
+/************************************** отсюда закомментировать или откомментировать*/
 sequelize
   .sync({ force: true })
   .then(result => {

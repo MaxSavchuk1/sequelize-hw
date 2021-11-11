@@ -12,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Brand.init(
     {
-      brandName: { type: DataTypes.STRING, allowNull: false },
+      brandName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
       description: { type: DataTypes.TEXT },
     },
     {
